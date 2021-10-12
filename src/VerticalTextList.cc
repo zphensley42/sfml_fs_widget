@@ -10,9 +10,21 @@ VerticalTextList::VerticalTextList() : UiView() {}
 VerticalTextList::VerticalTextList(const std::vector<std::string> &items) : UiView() {
     for(auto& item : items) {
         m_items.emplace_back();
-        m_items.back().setString(item);
-        m_items.back().setFont(DrawUtil::instance().font());
-        m_items.back().setFillColor(sf::Color::White);
+        m_items.back().setText(item);
+        m_items.back().setForegroundColors({
+            sf::Color::White,
+            sf::Color::White,
+            sf::Color::White,
+            sf::Color::White,
+            sf::Color::White,
+        });
+        m_items.back().setBackgroundColors({
+                sf::Color::Black,
+                sf::Color::Cyan,
+                sf::Color::Blue,
+                sf::Color::Red,
+                sf::Color(100, 100, 100, 255),
+        });
     }
 }
 
@@ -46,9 +58,10 @@ void VerticalTextList::init() {
 
     float yPos = m_bounds.top;
     for(auto& item: m_items) {
+        item.setSize({m_bounds.width, 50});
         item.setPosition({m_bounds.left, yPos});
-        auto lb = item.getLocalBounds();
-        yPos += lb.height + 10;
+        auto itemHeight = item.getHeight();
+        yPos += itemHeight + 10;
     }
     m_bounds.height = yPos - m_bounds.top;
 
@@ -83,9 +96,9 @@ void VerticalTextList::draw() {
     float yPos = m_bounds.top - m_scroll.y; // TODO: don't allocate per loop
     for(auto& item: m_items) {
         item.setPosition({m_bounds.left, yPos});
-        DrawUtil::instance().window()->draw(item);
-        auto lb = item.getLocalBounds();
-        yPos += lb.height + 10;
+        item.draw(&DrawUtil::instance().contentView(), *DrawUtil::instance().window());
+        auto itemHeight = item.getHeight();
+        yPos += itemHeight + 10;
     }
 }
 

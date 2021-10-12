@@ -1,0 +1,3 @@
+[submodule "external/sfml_base_widgets"]
+	path = external/sfml_base_widgets
+	url = git@github.com:zphensley42/sfml_base_widgets.git

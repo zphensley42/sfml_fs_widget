@@ -29,14 +29,17 @@ else()
 endif (WIN32)
 
 
+set(sfml_base_widgets_DIR ${CMAKE_CURRENT_LIST_DIR}/external/sfml_base_widgets)
+find_package(sfml_base_widgets REQUIRED)
+
 
 
 add_library(sfml_fs_widget
-        ${CMAKE_CURRENT_LIST_DIR}/FSWidget.cc
-        ${CMAKE_CURRENT_LIST_DIR}/UiView.cc
-        ${CMAKE_CURRENT_LIST_DIR}/VerticalTextList.cc
-        ${CMAKE_CURRENT_LIST_DIR}/DrawUtil.cc
-        ${CMAKE_CURRENT_LIST_DIR}/Controls.cc
+        ${CMAKE_CURRENT_LIST_DIR}/src/FSWidget.cc
+        ${CMAKE_CURRENT_LIST_DIR}/src/UiView.cc
+        ${CMAKE_CURRENT_LIST_DIR}/src/VerticalTextList.cc
+        ${CMAKE_CURRENT_LIST_DIR}/src/DrawUtil.cc
+        ${CMAKE_CURRENT_LIST_DIR}/src/Controls.cc
 )
-target_include_directories(sfml_fs_widget PUBLIC ${CMAKE_CURRENT_LIST_DIR})
-target_link_libraries(sfml_fs_widget sfml-audio sfml-graphics sfml-window sfml-system)
+target_include_directories(sfml_fs_widget PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include)
+target_link_libraries(sfml_fs_widget sfml_base_widgets sfml-audio sfml-graphics sfml-window sfml-system)

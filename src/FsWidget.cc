@@ -56,6 +56,12 @@ void FS_Widget::show() {
                     hoveredView->onMouseWheelScrolled(event.mouseWheelScroll.wheel, event.mouseWheelScroll.delta);
                 }
             }
+            else if (event.type == sf::Event::Resized) {
+                // update the view to the new size of the window (show more instead of stretch views to the new 'size')
+                sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
+                window.setView(sf::View(visibleArea));
+            }
+            // TODO: Else where we delegate to BaseWidget views (make list extend it?)
             else if(event.type == sf::Event::MouseButtonPressed) {
             }
             else if(event.type == sf::Event::MouseButtonReleased) {
@@ -69,11 +75,6 @@ void FS_Widget::show() {
                 else {
                     hoveredView = nullptr;
                 }
-            }
-            else if (event.type == sf::Event::Resized) {
-                // update the view to the new size of the window (show more instead of stretch views to the new 'size')
-                sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
-                window.setView(sf::View(visibleArea));
             }
         }
 

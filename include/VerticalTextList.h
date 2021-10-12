@@ -2,6 +2,7 @@
 #define GWIDI_IMPORTER_VERTICALTEXTLIST_H
 
 #include "UiView.h"
+#include "ButtonWidget.h"
 
 namespace sfml { namespace fs { namespace widget {
 
@@ -31,7 +32,7 @@ private:
     void init();
 
     sf::RectangleShape m_background;
-    std::vector<sf::Text> m_items;
+    std::vector<sfml::base::ButtonWidget> m_items;
     sf::Font m_itemFont;
 
     sf::Vector2f m_scroll{0, 0};

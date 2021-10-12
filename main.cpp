@@ -63,7 +63,6 @@ int main() {
             else if (event.type == sf::Event::Resized) {
                 // update the view to the new size of the window (show more instead of stretch views to the new 'size')
                 sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
-//                LayoutManager::instance().setup(window, handler);
                 window.setView(sf::View(visibleArea));
             }
         }

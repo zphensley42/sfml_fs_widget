@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(Gwidi_Importer)
+project(sfml_fs_widget)
 
 set(CMAKE_CXX_STANDARD 20)
 set(SFML_USE_STATIC_STD_LIBS ON)
