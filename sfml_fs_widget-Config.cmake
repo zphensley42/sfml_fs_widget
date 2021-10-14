@@ -36,7 +36,6 @@ find_package(sfml_base_widgets REQUIRED)
 
 add_library(sfml_fs_widget
         ${CMAKE_CURRENT_LIST_DIR}/src/FSWidget.cc
-        ${CMAKE_CURRENT_LIST_DIR}/src/UiView.cc
         ${CMAKE_CURRENT_LIST_DIR}/src/VerticalTextList.cc
         ${CMAKE_CURRENT_LIST_DIR}/src/DrawUtil.cc
         ${CMAKE_CURRENT_LIST_DIR}/src/Controls.cc

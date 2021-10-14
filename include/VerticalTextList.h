@@ -1,24 +1,24 @@
 #ifndef GWIDI_IMPORTER_VERTICALTEXTLIST_H
 #define GWIDI_IMPORTER_VERTICALTEXTLIST_H
 
-#include "UiView.h"
+#include "BaseWidget.h"
 #include "ButtonWidget.h"
 
 namespace sfml { namespace fs { namespace widget {
 
-class VerticalTextList : public UiView {
+class VerticalTextList : public sfml::base::BaseWidget {
 public:
     const int SCROLL_SPEED_MULT = 10;
 
     VerticalTextList();
     VerticalTextList(const std::vector<std::string> &items);
 
-    void configure(sf::Vector2f size, sf::Vector2f position) override;
+    virtual void delegateEvent(sf::Event &event) override;
+    virtual void draw(sf::View* v, sf::RenderWindow &w) override;
 
-    virtual void onMouseWheelScrolled(sf::Mouse::Wheel wheel, float delta) override;
-    virtual bool isMouseIn(int x, int y) override;
+    virtual void setSize(sf::Vector2f size) override;
+    virtual void setPosition(sf::Vector2f position) override;
 
-    void draw() override;
 private:
     // TODO: For efficiency, bake the text items to a render texture?
     // TODO: When baked, we would have to show an 'overlay' per the selected position of the text instead of changing the drawing of the text

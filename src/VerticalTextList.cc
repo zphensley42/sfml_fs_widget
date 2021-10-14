@@ -5,9 +5,9 @@
 namespace sfml { namespace fs { namespace widget {
 
 
-VerticalTextList::VerticalTextList() : UiView() {}
+VerticalTextList::VerticalTextList() : sfml::base::BaseWidget() {}
 
-VerticalTextList::VerticalTextList(const std::vector<std::string> &items) : UiView() {
+VerticalTextList::VerticalTextList(const std::vector<std::string> &items) : sfml::base::BaseWidget() {
     for(auto& item : items) {
         m_items.emplace_back();
         m_items.back().setText(item);
@@ -28,26 +28,55 @@ VerticalTextList::VerticalTextList(const std::vector<std::string> &items) : UiVi
     }
 }
 
-bool VerticalTextList::isMouseIn(int x, int y) {
-    return m_background.getGlobalBounds().contains(x, y);
-}
+void VerticalTextList::delegateEvent(sf::Event &event) {
+    base::BaseWidget::delegateEvent(event);
+    switch(event.type) {
+        case sf::Event::EventType::MouseWheelScrolled: {
+            if(base::FocusManager::instance().isHovered(this)) {
+                auto wheel = event.mouseWheelScroll.wheel;
+                auto delta = event.mouseWheelScroll.delta;
+                if(wheel == sf::Mouse::Wheel::VerticalWheel) {
+                    m_scroll.y -= (delta * SCROLL_SPEED_MULT);
+                    if(m_scroll.y < m_scrollLimits.first) {
+                        m_scroll.y = m_scrollLimits.first;
+                    }
 
-void VerticalTextList::onMouseWheelScrolled(sf::Mouse::Wheel wheel, float delta) {
-    // Update our scrolling
-    if(wheel == sf::Mouse::Wheel::VerticalWheel) {
-        m_scroll.y -= (delta * SCROLL_SPEED_MULT);
-        if(m_scroll.y < m_scrollLimits.first) {
-            m_scroll.y = m_scrollLimits.first;
-        }
-
-        if(m_scroll.y > m_scrollLimits.second) {
-            m_scroll.y = m_scrollLimits.second;
+                    if(m_scroll.y > m_scrollLimits.second) {
+                        m_scroll.y = m_scrollLimits.second;
+                    }
+                }
+            }
+            break;
         }
     }
 }
 
-void VerticalTextList::configure(sf::Vector2f size, sf::Vector2f position) {
-    UiView::configure(size, position);
+//bool VerticalTextList::isMouseIn(int x, int y) {
+//    return m_background.getGlobalBounds().contains(x, y);
+//}
+//
+//void VerticalTextList::onMouseWheelScrolled(sf::Mouse::Wheel wheel, float delta) {
+//    // Update our scrolling
+//    if(wheel == sf::Mouse::Wheel::VerticalWheel) {
+//        m_scroll.y -= (delta * SCROLL_SPEED_MULT);
+//        if(m_scroll.y < m_scrollLimits.first) {
+//            m_scroll.y = m_scrollLimits.first;
+//        }
+//
+//        if(m_scroll.y > m_scrollLimits.second) {
+//            m_scroll.y = m_scrollLimits.second;
+//        }
+//    }
+//}
+
+void VerticalTextList::setPosition(sf::Vector2f position) {
+    sfml::base::BaseWidget::setPosition(position);
+
+    init();
+}
+
+void VerticalTextList::setSize(sf::Vector2f size) {
+    sfml::base::BaseWidget::setSize(size);
 
     init();
 }
@@ -87,7 +116,7 @@ void VerticalTextList::recalcScrollLimits() {
     std::cout << "Calculated scroll limits, min: " << m_scrollLimits.first << ", max: " << m_scrollLimits.second << std::endl;
 }
 
-void VerticalTextList::draw() {
+void VerticalTextList::draw(sf::View* v, sf::RenderWindow &w) {
     DrawUtil::instance().window()->setView(DrawUtil::instance().contentView());
 
     m_background.setPosition({m_bounds.left, m_bounds.top - m_scroll.y});

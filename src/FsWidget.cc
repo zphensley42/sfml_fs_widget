@@ -37,9 +37,8 @@ void FS_Widget::show() {
         std::cout << "File: " << file << std::endl;
     }
     VerticalTextList list(files);
-    list.configure({300, 300}, {10, 0});
-
-    UiView* hoveredView {nullptr};
+    list.setSize({300, 300});
+    list.setPosition({10, 0});
 
     while (window.isOpen())
     {
@@ -51,40 +50,39 @@ void FS_Widget::show() {
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
-            else if(event.type == sf::Event::MouseWheelScrolled) {
-                if(hoveredView) {
-                    hoveredView->onMouseWheelScrolled(event.mouseWheelScroll.wheel, event.mouseWheelScroll.delta);
-                }
-            }
             else if (event.type == sf::Event::Resized) {
                 // update the view to the new size of the window (show more instead of stretch views to the new 'size')
                 sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
                 window.setView(sf::View(visibleArea));
             }
             // TODO: Else where we delegate to BaseWidget views (make list extend it?)
-            else if(event.type == sf::Event::MouseButtonPressed) {
-            }
-            else if(event.type == sf::Event::MouseButtonReleased) {
-            }
-            else if(event.type == sf::Event::MouseMoved) {
-                // Determine which view we are in from our list of views (currently just the list)
-                if(list.isMouseIn(event.mouseMove.x, event.mouseMove.y)) {
-                    hoveredView = &list;
-                    break;
-                }
-                else {
-                    hoveredView = nullptr;
+            else {
+                if(!base::FocusManager::instance().delegateEventToNecessaryWidgets(event)) {
+                    list.delegateEvent(event);
                 }
             }
+//            else if(event.type == sf::Event::MouseButtonPressed) {
+//            }
+//            else if(event.type == sf::Event::MouseButtonReleased) {
+//            }
+//            else if(event.type == sf::Event::MouseMoved) {
+//                // Determine which view we are in from our list of views (currently just the list)
+//                if(list.isMouseIn(event.mouseMove.x, event.mouseMove.y)) {
+//                    hoveredView = &list;
+//                    break;
+//                }
+//                else {
+//                    hoveredView = nullptr;
+//                }
+//            }
         }
 
         // Clear screen
         window.clear(sf::Color::Black);
 
         // Draw our UI
-//        window.draw(hello);
         DrawUtil::instance().draw();
-        list.draw();
+        list.draw(nullptr, window);
 
         // Update the window
         window.display();

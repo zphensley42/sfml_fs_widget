@@ -1,8 +1,6 @@
 #ifndef GWIDI_IMPORTER_CONTROLS_H
 #define GWIDI_IMPORTER_CONTROLS_H
 
-#include "UiView.h"
-
 namespace sfml { namespace fs { namespace widget {
 
 class Controls {
