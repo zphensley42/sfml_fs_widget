@@ -57,8 +57,11 @@ void FS_Widget::show() {
             }
             // TODO: Else where we delegate to BaseWidget views (make list extend it?)
             else {
-                if(!base::FocusManager::instance().delegateEventToNecessaryWidgets(event)) {
-                    list.delegateEvent(event);
+//                if(!base::FocusManager::instance().delegateEventToNecessaryWidgets(event)) {
+                    if(list.delegateEvent(window, event)) {
+                        // Skip future delegates as necessary
+                        continue;
+//                    }
                 }
             }
 //            else if(event.type == sf::Event::MouseButtonPressed) {

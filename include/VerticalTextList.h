@@ -13,7 +13,7 @@ public:
     VerticalTextList();
     VerticalTextList(const std::vector<std::string> &items);
 
-    virtual void delegateEvent(sf::Event &event) override;
+    virtual bool delegateEvent(sf::RenderWindow& window, sf::Event &event) override;
     virtual void draw(sf::View* v, sf::RenderWindow &w) override;
 
     virtual void setSize(sf::Vector2f size) override;
@@ -32,7 +32,6 @@ private:
     void init();
 
     sf::RectangleShape m_background;
-    std::vector<sfml::base::ButtonWidget> m_items;
     sf::Font m_itemFont;
 
     sf::Vector2f m_scroll{0, 0};
