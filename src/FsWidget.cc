@@ -39,6 +39,9 @@ void FS_Widget::show() {
     VerticalTextList list(files);
     list.setSize({300, 300});
     list.setPosition({10, 0});
+    list.setItemSelectListener([](base::ButtonWidget* item) {
+        std::cout << "item selected: " <<  item->getText() << std::endl;
+    });
 
     while (window.isOpen())
     {

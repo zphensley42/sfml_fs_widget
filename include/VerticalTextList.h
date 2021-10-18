@@ -19,6 +19,10 @@ public:
     virtual void setSize(sf::Vector2f size) override;
     virtual void setPosition(sf::Vector2f position) override;
 
+    inline void setItemSelectListener(std::function<void(base::ButtonWidget*)> listener) {
+        m_itemSelected = listener;
+    }
+
 private:
     // TODO: For efficiency, bake the text items to a render texture?
     // TODO: When baked, we would have to show an 'overlay' per the selected position of the text instead of changing the drawing of the text
@@ -36,6 +40,8 @@ private:
 
     sf::Vector2f m_scroll{0, 0};
     std::pair<float, float> m_scrollLimits{0 ,0};
+
+    std::function<void(base::ButtonWidget*)> m_itemSelected{nullptr};
 };
 
 }}}

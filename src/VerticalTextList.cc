@@ -26,6 +26,11 @@ VerticalTextList::VerticalTextList(const std::vector<std::string> &items) : sfml
                                            });
 
         addChild(child);
+        child->setClickedListener([this, child](){
+            if(m_itemSelected) {
+                m_itemSelected(child);
+            }
+        });
     }
 }
 
