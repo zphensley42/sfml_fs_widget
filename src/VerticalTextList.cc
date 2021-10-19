@@ -25,6 +25,7 @@ VerticalTextList::VerticalTextList(const std::vector<std::string> &items) : sfml
                                                    sf::Color(100, 100, 100, 255),
                                            });
 
+        child->setTextAlign(TextAlign::ALIGN_LEFT);
         addChild(child);
         child->setClickedListener([this, child](){
             if(m_itemSelected) {

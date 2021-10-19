@@ -20,6 +20,11 @@ std::vector<std::string> FS_Widget::buildFileList() {
     return ret;
 }
 
+void initList(sf::RenderWindow &window, VerticalTextList& list) {
+    list.setSize({static_cast<float>(window.getSize().x) - 10, DrawUtil::instance().contentView().getSize().y});
+    list.setPosition({10, 0});
+}
+
 void FS_Widget::show() {
     sf::RenderWindow window(sf::VideoMode(400, 400), "File Select");
     DrawUtil::instance().init(window);
@@ -31,14 +36,12 @@ void FS_Widget::show() {
     sf::Text hello("Hello Popup!", mainFont);
     hello.setPosition({0, 0});
 
-    // TODO: Build a vertically scrolling list of items for the file list
     auto files = buildFileList();
     for(auto &file : files) {
         std::cout << "File: " << file << std::endl;
     }
     VerticalTextList list(files);
-    list.setSize({300, 300});
-    list.setPosition({10, 0});
+    initList(window, list);
     list.setItemSelectListener([](base::ButtonWidget* item) {
         std::cout << "item selected: " <<  item->getText() << std::endl;
     });
@@ -57,6 +60,8 @@ void FS_Widget::show() {
                 // update the view to the new size of the window (show more instead of stretch views to the new 'size')
                 sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
                 window.setView(sf::View(visibleArea));
+                DrawUtil::instance().init(window);
+                initList(window, list);
             }
             // TODO: Else where we delegate to BaseWidget views (make list extend it?)
             else {
@@ -67,20 +72,6 @@ void FS_Widget::show() {
 //                    }
                 }
             }
-//            else if(event.type == sf::Event::MouseButtonPressed) {
-//            }
-//            else if(event.type == sf::Event::MouseButtonReleased) {
-//            }
-//            else if(event.type == sf::Event::MouseMoved) {
-//                // Determine which view we are in from our list of views (currently just the list)
-//                if(list.isMouseIn(event.mouseMove.x, event.mouseMove.y)) {
-//                    hoveredView = &list;
-//                    break;
-//                }
-//                else {
-//                    hoveredView = nullptr;
-//                }
-//            }
         }
 
         // Clear screen
