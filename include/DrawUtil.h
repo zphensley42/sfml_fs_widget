@@ -30,8 +30,12 @@ public:
     }
 
     inline sf::View& controlsView() {
-        return m_contentView;
+        return m_controlsView;
     }
+
+    bool mouseInTitleView();
+    bool mouseInContentView();
+    bool mouseInControlsView();
 
     void draw();
 private:
@@ -45,6 +49,11 @@ private:
     sf::RectangleShape m_titleBack;
     sf::RectangleShape m_contentBack;
     sf::RectangleShape m_controlsBack;
+
+
+    sf::FloatRect m_titleViewBounds;
+    sf::FloatRect m_contentViewBounds;
+    sf::FloatRect m_controlsViewBounds;
 };
 
 }}}

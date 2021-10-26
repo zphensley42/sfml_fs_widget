@@ -36,10 +36,10 @@ VerticalTextList::VerticalTextList(const std::vector<std::string> &items) : sfml
 }
 
 // TODO: Determine how to handle overlapping bounds? (i.e. children inside parents should take precedence?)
-bool VerticalTextList::delegateEvent(sf::RenderWindow& window, sf::Event &event) {
+bool VerticalTextList::delegateEvent(sf::RenderWindow& window, sf::Event &event, sf::View* view) {
     // Delegate to children first (for overlapping bounds)?
     for(auto& item : m_children) {
-        if(item->delegateEvent(window, event)) {
+        if(item->delegateEvent(window, event, view)) {
             return true;
         }
     }
@@ -127,6 +127,15 @@ void VerticalTextList::draw(sf::View* v, sf::RenderWindow &w) {
         auto itemHeight = but->getHeight();
         yPos += itemHeight + 10;
     }
+}
+
+void VerticalTextList::selectItem(base::ButtonWidget *item) {
+    // De-select other items
+    for(auto &i : m_children) {
+        i->setActivated(false);
+    }
+
+    item->setActivated(true);
 }
 
 }

@@ -13,7 +13,9 @@ public:
     VerticalTextList();
     VerticalTextList(const std::vector<std::string> &items);
 
-    virtual bool delegateEvent(sf::RenderWindow& window, sf::Event &event) override;
+    // TODO: Don't let contains work when we are 'outside' the view itself (if items are 'behind' the control bar for ex: if mouse is in control bar, don't pass to
+    // TODO: items in the list, stop it before we make it that far continue on to delegate to that view)
+    virtual bool delegateEvent(sf::RenderWindow& window, sf::Event &event, sf::View* view) override;
     virtual void draw(sf::View* v, sf::RenderWindow &w) override;
 
     virtual void setSize(sf::Vector2f size) override;
@@ -22,6 +24,8 @@ public:
     inline void setItemSelectListener(std::function<void(base::ButtonWidget*)> listener) {
         m_itemSelected = listener;
     }
+
+    void selectItem(base::ButtonWidget* item);
 
 private:
     // TODO: For efficiency, bake the text items to a render texture?
