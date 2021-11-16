@@ -138,4 +138,14 @@ void VerticalTextList::selectItem(base::ButtonWidget *item) {
     item->setActivated(true);
 }
 
+base::BaseWidget* VerticalTextList::selectedItem() {
+    auto it = std::find_if(m_children.begin(), m_children.end(), [](base::BaseWidget* widget){
+        return widget->isActivated();
+    });
+    if(it != m_children.end()) {
+        return *it;
+    }
+    return nullptr;
+}
+
 }

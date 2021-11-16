@@ -26,6 +26,7 @@ public:
     }
 
     void selectItem(base::ButtonWidget* item);
+    base::BaseWidget* selectedItem();
 
 private:
     // TODO: For efficiency, bake the text items to a render texture?

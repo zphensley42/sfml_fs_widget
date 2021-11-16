@@ -6,6 +6,7 @@
 #include "DrawUtil.h"
 #include <filesystem>
 #include <string>
+#include "Controls.h"
 
 namespace sfml { namespace fs { namespace widget {
 
@@ -25,12 +26,6 @@ std::vector<std::string> FS_Widget::buildFileList() {
 void initList(sf::RenderWindow &window, VerticalTextList& list) {
     list.setSize({static_cast<float>(window.getSize().x) - 10, DrawUtil::instance().contentView().getSize().y});
     list.setPosition({10, 0});
-}
-
-void initControlsGroup(sf::RenderWindow &window, sfml::base::HContainer& container) {
-    container.setSize({DrawUtil::instance().controlsView().getSize().x, DrawUtil::instance().controlsView().getSize().y});
-    container.setPosition({20, 0});
-    container.setSpacing(20);
 }
 
 void FS_Widget::show() {
@@ -64,53 +59,23 @@ void FS_Widget::show() {
     // Bottom controls
     // OK - close with selection
     // Cancel - close without selection
-    float windowWidth = static_cast<float>(window.getSize().x);
-    float butWidth = windowWidth * 0.25f;
-    float x = (0.33f * windowWidth) - butWidth;
-    auto* but_ok = new sfml::base::ButtonWidget();
-    but_ok->setText("OK");
-    but_ok->setTextAlign(sfml::base::ButtonWidget::TextAlign::ALIGN_CENTER);
-    but_ok->setPosition({x, 0.f});
-    but_ok->setSize({butWidth, 40});
-    but_ok->setForegroundColors({
-                                            sf::Color::White,
-                                            sf::Color::White,
-                                            sf::Color::White,
-                                            sf::Color::White,
-                                            sf::Color::White,
-                                    });
-    but_ok->setBackgroundColors({
-                                            sf::Color::Black,
-                                            sf::Color::Cyan,
-                                            sf::Color::Blue,
-                                            sf::Color::Red,
-                                            sf::Color(100, 100, 100, 255),
-                                    });
+    Controls bottomControls;
+    bottomControls.setOkaySelectedListener([&list, &window](){
+        auto selectedItem = list.selectedItem();
+        if(selectedItem) {
+            auto asButton = static_cast<base::ButtonWidget*>(selectedItem);
+            std::cout << "OK clicked, TODO: Close the dialog, selected item: " << asButton->getText() << std::endl;
+        }
+        else {
+            std::cout << "OK clicked, TODO: Close the dialog, NO selected item" << std::endl;
+        }
 
-    x = (0.66f * windowWidth);
-    auto* but_cancel = new sfml::base::ButtonWidget();
-    but_cancel->setText("Cancel");
-    but_cancel->setTextAlign(sfml::base::ButtonWidget::TextAlign::ALIGN_CENTER);
-    but_cancel->setPosition({x, 0.f});
-    but_cancel->setSize({butWidth, 40});
-    but_cancel->setForegroundColors({
-                                       sf::Color::White,
-                                       sf::Color::White,
-                                       sf::Color::White,
-                                       sf::Color::White,
-                                       sf::Color::White,
-                               });
-    but_cancel->setBackgroundColors({
-                                       sf::Color::Black,
-                                       sf::Color::Cyan,
-                                       sf::Color::Blue,
-                                       sf::Color::Red,
-                                       sf::Color(100, 100, 100, 255),
-                               });
-    sfml::base::HContainer controlsContainer;
-    controlsContainer.addChild(but_ok);
-    controlsContainer.addChild(but_cancel);
-    initControlsGroup(window, controlsContainer);
+        window.close();
+    });
+    bottomControls.setCancelSelectedListener([&window](){
+        std::cout << "Cancel clicked, TODO: Close the dialog" << std::endl;
+        window.close();
+    });
 
     bool firstDraw{true};
     while (window.isOpen())
@@ -129,14 +94,14 @@ void FS_Widget::show() {
                 window.setView(sf::View(visibleArea));
                 DrawUtil::instance().init(window);
                 initList(window, list);
-                initControlsGroup(window, controlsContainer);
+                bottomControls.resize();
             }
             // TODO: Else where we delegate to BaseWidget views (make list extend it?)
             else {
                 if(DrawUtil::instance().mouseInContentView() && list.delegateEvent(window, event, &DrawUtil::instance().contentView())) {
                     continue;
                 }
-                else if(DrawUtil::instance().mouseInControlsView() && controlsContainer.delegateEvent(window, event, &DrawUtil::instance().controlsView())) {
+                else if(DrawUtil::instance().mouseInControlsView() && bottomControls.delegateEvent(window, event, &DrawUtil::instance().controlsView())) {
                     continue;
                 }
             }
@@ -150,14 +115,14 @@ void FS_Widget::show() {
         DrawUtil::instance().draw();
 
         // Bottom controls
-        controlsContainer.draw(&DrawUtil::instance().controlsView(), window);
+        bottomControls.draw(&DrawUtil::instance().controlsView(), window);
 
         // Content
         list.draw(nullptr, window);
 
         if(firstDraw) {
             firstDraw = false;
-            initControlsGroup(window, controlsContainer);
+            bottomControls.resize();
             // Re-layout after first draw so that we have real sizes of children (TODO: Make this logic flow better, i.e. without having to do an additional pass)
         }
 
