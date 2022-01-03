@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <stack>
 
 namespace sfml { namespace fs { namespace widget {
 
@@ -13,7 +14,10 @@ public:
     void show();
 
 private:
-    std::vector<std::string> buildFileList();
+    std::vector<std::string> pushDirToHistory(const std::string& dir);
+    std::pair<std::string, std::vector<std::string>> popDirFromHistory();
+    std::pair<std::string, std::vector<std::string>> moveDirUpInHistory();
+    std::stack<std::string> m_dirHistory;
 
 };
 

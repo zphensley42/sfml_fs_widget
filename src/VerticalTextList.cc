@@ -7,23 +7,28 @@ namespace sfml::fs::widget {
 VerticalTextList::VerticalTextList() : sfml::base::BaseWidget() {}
 
 VerticalTextList::VerticalTextList(const std::vector<std::string> &items) : sfml::base::BaseWidget() {
+    setItems(items);
+}
+
+void VerticalTextList::setItems(const std::vector<std::string> &items) {
+    clearChildren();
     for(auto& item : items) {
         auto child = new base::ButtonWidget();
         child->setText(item);
         child->setForegroundColors({
-                                                   sf::Color::White,
-                                                   sf::Color::White,
-                                                   sf::Color::White,
-                                                   sf::Color::White,
-                                                   sf::Color::White,
-                                           });
+                                           sf::Color::White,
+                                           sf::Color::White,
+                                           sf::Color::White,
+                                           sf::Color::White,
+                                           sf::Color::White,
+                                   });
         child->setBackgroundColors({
-                                                   sf::Color::Black,
-                                                   sf::Color::Cyan,
-                                                   sf::Color::Blue,
-                                                   sf::Color::Red,
-                                                   sf::Color(100, 100, 100, 255),
-                                           });
+                                           sf::Color::Black,
+                                           sf::Color::Cyan,
+                                           sf::Color::Blue,
+                                           sf::Color::Red,
+                                           sf::Color(100, 100, 100, 255),
+                                   });
 
         child->setTextAlign(TextAlign::ALIGN_LEFT);
         addChild(child);

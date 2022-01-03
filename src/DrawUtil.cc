@@ -16,11 +16,11 @@ void DrawUtil::init(sf::RenderWindow &window) {
     }
 
     auto size = window.getSize();
-    m_titleView.reset({0, 0, static_cast<float>(size.x), static_cast<float>(size.y * 0.05)});
-    m_titleView.setViewport({0, 0, 1, 0.05f});
+    m_titleView.reset({0, 0, static_cast<float>(size.x), static_cast<float>(size.y * 0.10)});
+    m_titleView.setViewport({0, 0, 1, 0.10f});
 
-    m_contentView.reset({0, 0, static_cast<float>(size.x), static_cast<float>(size.y * 0.85)});
-    m_contentView.setViewport({0, 0.05f, 1, 0.85f});
+    m_contentView.reset({0, 0, static_cast<float>(size.x), static_cast<float>(size.y * 0.80)});
+    m_contentView.setViewport({0, 0.10f, 1, 0.80f});
 
     m_controlsView.reset({0, 0, static_cast<float>(size.x), static_cast<float>(size.y * 0.10)});
     m_controlsView.setViewport({0, 0.90f, 1, 0.10f});
@@ -39,12 +39,12 @@ void DrawUtil::init(sf::RenderWindow &window) {
 
     m_titleViewBounds.left = 0;
     m_titleViewBounds.top = 0;
-    m_titleViewBounds.height = 0.05f * m_window->getSize().y;
+    m_titleViewBounds.height = 0.10f * m_window->getSize().y;
     m_titleViewBounds.width = 1.f * m_window->getSize().x;
 
     m_contentViewBounds.left = 0;
-    m_contentViewBounds.top = 0.05f * m_window->getSize().y;
-    m_contentViewBounds.height = 0.85f * m_window->getSize().y;
+    m_contentViewBounds.top = 0.10f * m_window->getSize().y;
+    m_contentViewBounds.height = 0.80f * m_window->getSize().y;
     m_contentViewBounds.width = 1.f * m_window->getSize().x;
 
     m_controlsViewBounds.left = 0;

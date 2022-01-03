@@ -13,6 +13,8 @@ public:
     VerticalTextList();
     VerticalTextList(const std::vector<std::string> &items);
 
+    void setItems(const std::vector<std::string> &items);
+
     // TODO: Don't let contains work when we are 'outside' the view itself (if items are 'behind' the control bar for ex: if mouse is in control bar, don't pass to
     // TODO: items in the list, stop it before we make it that far continue on to delegate to that view)
     virtual bool delegateEvent(sf::RenderWindow& window, sf::Event &event, sf::View* view) override;
